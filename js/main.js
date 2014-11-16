@@ -1,5 +1,24 @@
 	function initialize() {
 		var mapOptions = {
+			styles: [
+			  {
+			    "featureType": "landscape",
+			    "stylers": [
+			      { "color": "#20bc55" }
+			    ]
+			  },{
+			    "featureType": "water",
+			    "stylers": [
+			      { "color": "#545847" }
+			    ]
+			  },{
+			    "featureType": "road",
+			    "elementType": "geometry",
+			    "stylers": [
+			      { "color": "#f0f0f2" }
+			    ]
+			  }
+			],
 			center:{lat:38.8993487,lng:-77.0145665},
 			zoom: 12
 		};
