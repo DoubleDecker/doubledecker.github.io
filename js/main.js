@@ -33,7 +33,9 @@
 
 		var map = new google.maps.Map(document.getElementById('map-canvas'),
 			mapOptions);
-
+		function CreateContent(MarkerObject){
+			return "<h3>" + MarkerObject.properties.Name + "</h3>" + MarkerObject.properties.Description;
+		}
 		function CreateNewMarker(MarkerObject){
 
 			// console.log(MarkerObject);
@@ -42,7 +44,18 @@
 				map: map,
 				title: MarkerObject.title
 			});
-		}
+			var contentString = CreateContent(MarkerObject);
+
+			 var infowindow = new google.maps.InfoWindow({
+			  content: contentString
+			});
+
+			 google.maps.event.addListener(marker, 'click', function() {
+			  infowindow.open(map,marker);
+			  // Fix Centering Problem:
+			  map.setCenter(marker.getPosition());
+			});
+		};
 
 		$.getJSON('js/json/WashingtonDC.json', function(json, textStatus) {
 			for (var i = 0; i < json.features.length; i++) {
