@@ -53,6 +53,8 @@
 				// console.log(json.features[i].properties);
 			};
 		});
+		var logo = document.createElement("div");
+		logo.innerHTML = '<span class="pop_up_box_text"><img src=img/logo.png" width="200" height="154" border="0" /></span>';
 	}
 
 	google.maps.event.addDomListener(window, 'load', initialize);
