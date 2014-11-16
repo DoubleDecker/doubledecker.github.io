@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!--[if lt IE7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>CivicWorks</title>
+         <meta name="author" content="" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+          <!--[if lt IE 9]>
+   	 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  		<![endif]-->
+<style>
+      html, body, #map-canvas {
+        margin: 0%;
+        padding: 0;
+        height: 100%;
+        top:0;
+      }
+      #content img{
+        height: 10.5em;
+        cursor: pointer;
+        padding-right: 5px;
+      }
+      #lightbox{
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .75);
+        position: absolute;
+        
+        left: 0;
+        z-index: 1000;
+        display: none;
+         text-align: center;
+
+      }
+      #lightbox>img{
+        position: relative;
+        height: 65%;
+        top: 15%;
+        margin: auto auto auto auto;
+       }
+      .exit{
+        position: absolute;
+        top: 2em;
+        right: 5em;
+        font-size: 48px;
+        width: 1em;
+        height: 1em;
+        background: white;
+        z-index: 1003;
+        line-height: 1;
+        border: 1px gray solid;
+      }
+
+    </style>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+var map;
+function initialize() {
+  var mapOptions = {
+    zoom: 13,
+    center: new google.maps.LatLng(39.312657,-76.616990),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  function CreateNewMarker(MarkerObject){
+
+  var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(MarkerObject.latitude, MarkerObject.longitude),
+      map: map,
+      title: MarkerObject.title
+  });
+
+  var contentString = CreateContent(MarkerObject);
+
+   var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+
+   google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(map,marker);
+    // Fix Centering Problem:
+    map.setCenter(marker.getPosition());
+  });
+  };
+
+  function CreateContent(MarkerObject){
+beforeContent = function(MarkerObject){
+  if(MarkerObject.beforePictures){
+    var beforeString = "<p>Before: </p>"
+  for(var i = 0; i < MarkerObject.beforePictures.length; i++) {
+         beforeString +='<img src="' + MarkerObject.beforePictures[i] + '" />'
+      };
+      return beforeString;
+    }
+    else
+    {
+      return " "
+    }
+    }
+afterContent = function(MarkerObject){
+  var afterString = "<p> After: </p>"
+   if(MarkerObject.afterPictures){
+      for (var i = 0; i < MarkerObject.afterPictures.length; i++) {
+        afterString +='<img src="' + MarkerObject.afterPictures[i] + '" />'
+      };
+      return afterString;
+    }
+    else
+    {
+      return " "
+    }
+}
+
+
+contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">' + MarkerObject.title +'</h1>'+
+      '<div id="bodyContent">'+
+      beforeContent(MarkerObject)
+
+       + afterContent(MarkerObject) +
+      '</div>'+
+      '</div>';
+
+
+
+
+return contentString;
+  };
+
+  var markers=[
+  ENA = {
+    latitude:39.311643,
+    longitude: -76.609670,
+    title: '440 East North Avenue',
+    beforePictures:['img/440 E North Avenue/before.JPG'],
+    afterPictures:['img/440 E North Avenue/after1.JPG']
+  },
+  PH = {
+    latitude: 39.338808,
+    longitude: -76.665934,
+    title: 'Park Heights and Boardman Avenue',
+    afterPictures:['img/ParkHeights/after1.JPG','img/ParkHeights/after.JPG']
+  },
+  NC = {
+    latitude: 39.291538,
+    longitude: -76.638535,
+    title: '200 North Carey Street',
+    afterPictures:['img/N Carey/after1.JPG','img/N Carey/after0.JPG']
+  },
+  MaC = {
+    latitude: 39.297463,
+    longitude: -76.586470,
+    title: 'McElderly and North Collington',
+    afterPictures:['img/McElderly/after.JPG']
+  },
+  NCol = {
+    latitude: 39.295598,
+    longitude: -76.586539,
+    title: '400 N Collington Ave',
+    beforePictures:['img/N Collington/before1.JPG'],
+    afterPictures:['img/N Collington/after2.JPG']
+  },
+    OC = {
+    latitude:  39.295283,
+    longitude: -76.587459,
+    title: 'Orleans St. and North Chester Street',
+    afterPictures:['img/Orleans/after.JPG']
+  },
+  NCharl = {
+    latitude:  39.312657,
+    longitude: -76.616990,
+    title: '2012 North Charles Street',
+    beforePictures:['img/N Charles/before1.jpg'],
+    afterPictures:['img/N Charles/after1.JPG']
+  },
+  ];
+for (var i = 0; i < markers.length; i++) {
+  CreateNewMarker(markers[i]);
+};
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+$(document).on("click", "#bodyContent img", function(e){
+ var newSrc = e.target.src;
+ $('#lightbox img').attr('src' , newSrc);
+ $('#lightbox').show();
+ $("strong").on("click", function(){
+  console.log("working")
+$("#lightbox").hide();
+});
+});
+    </script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <div id="lightbox">
+          <strong class="exit">×</strong>
+          <img src="#">
+          </div>
+      <div id="map-canvas"></div>
+    </body>
+<!-- Just notes: -->
+<!-- so... infobox = infowindow + custom css -->
+<!--  map.setCenter(marker.getPosition()); fixed centering problem -->
+</html>
